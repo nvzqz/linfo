@@ -4,6 +4,7 @@ use core::{
     convert::{TryFrom, TryInto},
     fmt,
 };
+use crate::ParseError;
 
 mod decl;
 
@@ -86,7 +87,7 @@ impl SpdxLicense {
         (0..(Self::COUNT as u16)).map(|l| unsafe {
             // SAFETY: Transmuting a `u16` up to `COUNT` is safe because the
             // range contains all instantiable values.
-            std::mem::transmute(l)
+            core::mem::transmute(l)
         })
     }
 
@@ -136,28 +137,5 @@ impl SpdxLicense {
         const MAX: usize = SpdxLicense::CC01 as usize;
         let val = self as usize;
         (val >= MIN) & (val <= MAX)
-    }
-}
-
-/// An error returned when attempting to parse a
-/// [`SpdxLicense`](enum.SpdxLicense.html).
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub enum ParseError<'a> {
-    /// Empty string provided.
-    Empty,
-    /// An error returned when a license name is unknown.
-    UnknownLicenseId(&'a str),
-}
-
-impl fmt::Display for ParseError<'_> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            ParseError::Empty => {
-                write!(f, "empty string provided")
-            },
-            ParseError::UnknownLicenseId(id) => {
-                write!(f, "'{}' is not a known license ID", id)
-            },
-        }
     }
 }
