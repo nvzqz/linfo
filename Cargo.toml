@@ -1,0 +1,21 @@
+[package]
+name = "linfo"
+version = "0.1.0"
+authors = ["Nikolai Vazquez"]
+license = "MIT OR Apache-2.0"
+description = "License info."
+edition = "2018"
+homepage = "https://github.com/nvzqz/linfo"
+repository = "https://github.com/nvzqz/linfo"
+documentation = "https://docs.rs/linfo"
+categories = ["no-std"]
+
+# Used for potential performance improvements over `match` statements
+[dependencies.phf]
+version = "0.8"
+features = ["macros"]
+optional = true
+
+[features]
+default = ["std"]
+std = []
