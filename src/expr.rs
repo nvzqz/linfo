@@ -241,6 +241,51 @@ mod impl_display {
     }
 }
 
+#[cfg(feature = "serde")]
+mod serde {
+    use core::fmt;
+    use serde::{
+        ser::{Serialize, Serializer},
+        de::{self, Deserialize, Deserializer, Visitor},
+    };
+    use super::Expr;
+
+    struct ExprVisitor;
+
+    impl<'de> Visitor<'de> for ExprVisitor {
+        type Value = Expr;
+
+        #[inline]
+        fn expecting(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            f.write_str("a Expr string")
+        }
+
+        #[inline]
+        fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
+            where E: de::Error,
+        {
+            Expr::parse(v).map_err(E::custom)
+        }
+    }
+
+    impl<'de> Deserialize<'de> for Expr {
+        #[inline]
+        fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+        where
+            D: Deserializer<'de>
+        {
+            deserializer.deserialize_str(ExprVisitor)
+        }
+    }
+
+    impl Serialize for Expr {
+        #[inline]
+        fn serialize<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
+            s.serialize_str(&self.to_string())
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
