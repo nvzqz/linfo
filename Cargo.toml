@@ -24,3 +24,6 @@ optional = true
 [features]
 default = ["std"]
 std = []
+
+[package.metadata.docs.rs]
+features = ["default", "phf", "serde"]
