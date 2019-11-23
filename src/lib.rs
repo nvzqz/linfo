@@ -7,7 +7,7 @@
 extern crate std as core;
 
 use core::{
-    convert::TryFrom,
+    convert::{TryFrom, TryInto},
     fmt,
 };
 
@@ -63,6 +63,14 @@ impl<'a> TryFrom<&'a str> for License {
 }
 
 impl License {
+    /// Attempts to parse `input` and returns a [`ParseError`] on error.
+    #[inline]
+    pub fn parse<'a, I>(input: I) -> Result<Self, ParseError<'a>>
+        where I: TryInto<Self, Error = ParseError<'a>>
+    {
+        input.try_into()
+    }
+
     /// Returns the string identifier of this license. This is usually the same
     /// string used to parse the license.
     #[inline]
