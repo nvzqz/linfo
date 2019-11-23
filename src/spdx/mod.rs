@@ -7,6 +7,7 @@ use core::{
 use crate::ParseError;
 
 mod decl;
+mod serde;
 
 #[doc(inline)]
 pub use self::decl::SpdxLicense;

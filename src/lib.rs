@@ -26,6 +26,8 @@ pub use self::{
 
 /// A known license.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", serde(untagged))]
 pub enum License {
     /// A commonly found license listed [here](https://spdx.org/licenses).
     Spdx(SpdxLicense),
