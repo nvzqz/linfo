@@ -6,11 +6,20 @@ use core::{
 };
 use crate::ParseError;
 
-mod decl;
+mod gen;
+mod props;
 mod serde;
 
+use self::props::{BoolProperties, BoolProperty};
+
 #[doc(inline)]
-pub use self::decl::SpdxLicense;
+pub use self::gen::SpdxLicense;
+
+/// Information for all licenses.
+struct Info {
+    pub ids_with_names: Map<(&'static str, &'static str)>,
+    pub bool_properties: Map<BoolProperties>,
+}
 
 /// A fixed-size array for indexing with a [`SpdxLicense`] casted to [`usize`].
 /// See also [`SpdxLicense::COUNT`].
@@ -108,39 +117,41 @@ impl SpdxLicense {
     /// Returns the string identifier of this license.
     #[inline]
     pub const fn id(self) -> &'static str {
-        Self::ID[self as usize]
+        Self::_INFO.ids_with_names[self as usize].0
     }
 
     /// Returns the full name of this license.
     #[inline]
     pub const fn name(self) -> &'static str {
-        Self::NAME[self as usize]
+        Self::_INFO.ids_with_names[self as usize].1
     }
 
     /// Considered libre/free by the [Free Software Foundation
     /// (FSF)](https://www.fsf.org).
     #[inline]
-    pub const fn is_libre(self) -> bool {
-        Self::LIBRE[self as usize]
+    pub const fn is_fsf_libre(self) -> bool {
+        Self::_INFO.bool_properties[self as usize]
+            .contains(BoolProperty::FsfLibre)
     }
 
     /// The license is approved by the [Open Source Initiative
     /// (OSI)](https://opensource.org).
     #[inline]
     pub const fn is_osi_approved(self) -> bool {
-        Self::OSI[self as usize]
+        Self::_INFO.bool_properties[self as usize]
+            .contains(BoolProperty::OsiApproved)
     }
 
     /// Returns whether the license is associated with [Creative
     /// Commons](https://creativecommons.org).
     #[inline]
     pub const fn is_creative_commons(self) -> bool {
-        // CORRECTNESS: The ordering of `CcBy1` and `CC01` is *very important*
+        // CORRECTNESS: The ordering of `CcBy1` and `Cc01` is *very important*
         // for this function to emit correct results. They need to be declared
         // as the first and last Creative Common licenses in the enumeration,
         // respectively, in order for this check to work.
         const MIN: usize = SpdxLicense::CcBy1 as usize;
-        const MAX: usize = SpdxLicense::CC01 as usize;
+        const MAX: usize = SpdxLicense::Cc0_1 as usize;
         let val = self as usize;
         (val >= MIN) & (val <= MAX)
     }

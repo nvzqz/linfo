@@ -27,3 +27,6 @@ std = []
 
 [package.metadata.docs.rs]
 features = ["default", "phf", "serde"]
+
+[workspace]
+members = [".", "gen_spdx"]
