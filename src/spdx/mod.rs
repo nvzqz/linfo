@@ -139,4 +139,32 @@ impl SpdxLicense {
         let val = self as usize;
         (val >= MIN) & (val <= MAX)
     }
+
+    /// Returns whether the license is a [GNU General Public
+    /// License](https://en.wikipedia.org/wiki/GNU_General_Public_License).
+    #[inline]
+    pub const fn is_gpl(self) -> bool {
+        // CORRECTNESS: The ordering of `Gpl1Only` and `Gpl3OrLater` is *very
+        // important* for this function to emit correct results. They need to be
+        // declared as the first and last Creative Common licenses in the
+        // enumeration, respectively, in order for this check to work.
+        const MIN: usize = SpdxLicense::Gpl1Only as usize;
+        const MAX: usize = SpdxLicense::Gpl3OrLater as usize;
+        let val = self as usize;
+        (val >= MIN) & (val <= MAX)
+    }
+
+    /// Returns whether the license is an [Affero General Public
+    /// License](https://en.wikipedia.org/wiki/Affero_General_Public_License).
+    #[inline]
+    pub const fn is_agpl(self) -> bool {
+        // CORRECTNESS: The ordering of `Agpl1Only` and `Agpl3OrLater` is *very
+        // important* for this function to emit correct results. They need to be
+        // declared as the first and last Creative Common licenses in the
+        // enumeration, respectively, in order for this check to work.
+        const MIN: usize = SpdxLicense::Agpl1Only as usize;
+        const MAX: usize = SpdxLicense::Agpl3OrLater as usize;
+        let val = self as usize;
+        (val >= MIN) & (val <= MAX)
+    }
 }

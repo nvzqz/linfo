@@ -71,9 +71,13 @@ spdx_license! {
     Afl2_1 = "AFL-2.1", "Academic Free License v2.1", true, true;
     Afl3 = "AFL-3.0", "Academic Free License v3.0", true, true;
     Afmparse = "Afmparse", "Afmparse License", false, false;
+    // CORRECTNESS: Hello future hacker, `Agpl1Only` is considered the first
+    // Affero GPL as `MIN` in `is_agpl`.
     Agpl1Only = "AGPL-1.0-only", "Affero General Public License v1.0 only", false, false;
     Agpl1OrLater = "AGPL-1.0-or-later", "Affero General Public License v1.0 or later", false, false;
     Agpl3Only = "AGPL-3.0-only", "GNU Affero General Public License v3.0 only", true, true;
+    // CORRECTNESS: Hello future hacker, similarly to `Agpl1Only`,
+    // `Agpl3OrLater` is considered the *last* Affero GPL as `MAX` in `is_agpl`.
     Agpl3OrLater = "AGPL-3.0-or-later", "GNU Affero General Public License v3.0 or later", true, true;
     Aladdin = "Aladdin", "Aladdin Free Public License", false, false;
     Amdplpa = "AMDPLPA", "AMD's plpa_map.c License", false, false;
@@ -226,11 +230,15 @@ spdx_license! {
     Glide = "Glide", "3dfx Glide License", false, false;
     Glulxe = "Glulxe", "Glulxe License", false, false;
     Gnuplot = "gnuplot", "gnuplot License", true, false;
+    // CORRECTNESS: Hello future hacker, `Gpl1Only` is considered the first
+    // GNU GPL license as `MIN` in `is_gpl`.
     Gpl1Only = "GPL-1.0-only", "GNU General Public License v1.0 only", false, false;
     Gpl1OrLater = "GPL-1.0-or-later", "GNU General Public License v1.0 or later", false, false;
     Gpl2Only = "GPL-2.0-only", "GNU General Public License v2.0 only", true, true;
     Gpl2OrLater = "GPL-2.0-or-later", "GNU General Public License v2.0 or later", true, true;
     Gpl3Only = "GPL-3.0-only", "GNU General Public License v3.0 only", true, true;
+    // CORRECTNESS: Hello future hacker, similarly to `Gpl1Only`, `Gpl3OrLater`
+    // is considered the *last* GNU GPL as `MAX` in `is_gpl`.
     Gpl3OrLater = "GPL-3.0-or-later", "GNU General Public License v3.0 or later", true, true;
     GSoap1_3b = "gSOAP-1.3b", "gSOAP Public License v1.3b", false, false;
     HaskellReport = "HaskellReport", "Haskell Language Report License", false, false;
