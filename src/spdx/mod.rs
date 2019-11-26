@@ -12,11 +12,14 @@ mod serde;
 #[doc(inline)]
 pub use self::decl::SpdxLicense;
 
-/// A fixed-size array for indexing with a [`SpdxLicense`] casted to `usize`.
+/// A fixed-size array for indexing with a [`SpdxLicense`] casted to [`usize`].
 /// See also [`SpdxLicense::COUNT`].
 ///
-/// This is a good example of flexible management of [`SpdxLicense`] values that
-/// allows for indexing without bounds checks (via [`as usize`] casts) for free.
+/// This is great for very efficiently associating values with specific
+/// [`SpdxLicense`]s. It allows for safely indexing without bounds checks (via
+/// [`as usize`] casts) without calling [`get_unchecked`]. This is made possible
+/// by the compiler realizing that the number of variants is less than the
+/// number of elements in this array.
 ///
 /// **SemVer Compatibility:** Like [`SpdxLicense::COUNT`], by just being
 /// dependent on this value, the array size is allowed to change between
@@ -43,6 +46,8 @@ pub use self::decl::SpdxLicense;
 ///
 /// [`SpdxLicense`]: enum.SpdxLicense.html
 /// [`SpdxLicense::COUNT`]: enum.SpdxLicense.html#associatedconstant.COUNT
+/// [`usize`]: https://doc.rust-lang.org/std/primitive.usize.html
+/// [`get_unchecked`]: https://doc.rust-lang.org/std/primitive.slice.html#method.get_unchecked
 /// [`as usize`]: https://doc.rust-lang.org/nightly/reference/items/enumerations.html#custom-discriminant-values-for-field-less-enumerations
 pub type Map<A> = [A; SpdxLicense::COUNT];
 
