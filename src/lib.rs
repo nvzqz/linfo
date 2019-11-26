@@ -13,6 +13,8 @@ use core::{
 
 #[macro_use]
 mod macros;
+mod permissions;
+mod requirements;
 mod util;
 
 pub mod expr;
@@ -21,6 +23,8 @@ pub mod spdx;
 #[doc(inline)]
 pub use self::{
     expr::Expr,
+    permissions::Permissions,
+    requirements::Requirements,
     spdx::SpdxLicense,
 };
 
@@ -78,6 +82,24 @@ impl License {
         match self {
             License::Spdx(l) => l.id(),
             License::_NonExhaustive(never) => never.consume(),
+        }
+    }
+
+    /// Returns the permissions expressed by this license, if they are known.
+    #[inline]
+    pub fn permissions(&self) -> Option<Permissions> {
+        match self {
+            License::Spdx(l) => Some(l.permissions()),
+            _ => None,
+        }
+    }
+
+    /// Returns the requirements expressed by this license, if they are known.
+    #[inline]
+    pub fn requirements(&self) -> Option<Requirements> {
+        match self {
+            License::Spdx(l) => Some(l.requirements()),
+            _ => None,
         }
     }
 }

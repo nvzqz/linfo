@@ -4,7 +4,7 @@ use core::{
     convert::{TryFrom, TryInto},
     fmt,
 };
-use crate::ParseError;
+use crate::{ParseError, Permissions, Requirements};
 
 mod decl;
 mod serde;
@@ -115,6 +115,18 @@ impl SpdxLicense {
     #[inline]
     pub const fn name(self) -> &'static str {
         Self::NAME[self as usize]
+    }
+
+    /// Returns the permissions expressed by this license.
+    #[inline]
+    pub fn permissions(self) -> Permissions {
+        unimplemented!("TODO: Add permissions to SPDX matrix")
+    }
+
+    /// Returns the requirements expressed by this license.
+    #[inline]
+    pub fn requirements(&self) -> Requirements {
+        unimplemented!("TODO: Add requirements to SPDX matrix")
     }
 
     /// Considered libre/free by the [Free Software Foundation
